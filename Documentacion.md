@@ -71,3 +71,9 @@ se eliminaran componentes innecesarios o repetidos como card y charactercard.
 - layout se agregaron metaetiquetas.
 
 - se utiliazron components como filterPanel para el filtrado de los personajes, el DashboardPage donde coloco el titulo y total de datos
+
+- se mejoro la ui del proyecto tanto en card como en header, filtrado etc..
+
+## Principales problemas encontrados
+
+- no tenia tailwinds y toco instaalrlo y configurarlo

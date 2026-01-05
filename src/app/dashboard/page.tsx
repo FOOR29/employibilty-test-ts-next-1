@@ -1,68 +1,44 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { UseFetch } from '../hooks/useFetch'; 
 import { RICK_AND_MORTY_API } from '@/services/api'; 
-import { characters } from '../types'; 
-import Loading from '@/components/ui/Loading';
 import FiltersPanel from '@/app/components/FiltersPanel';
 import DashboardHeader from '@/app/components/DashboardHeader';
+import LoadingState from '@/app/components/ui/LoadingState';
+import { Card } from '../components/Card';
+import { useCharacterStats } from '../hooks/useCharacterStats';
+import { useCharacterFilter } from '../hooks/useCharacterFilter';
 
 export default function DashboardPage() {
   const { data: characters, loading, error } = UseFetch(RICK_AND_MORTY_API);
   
-  const [filteredCharacters, setFilteredCharacters] = useState<characters[]>([]);
+  // Estados de filtros
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [stats, setStats] = useState<Record<string, number>>({});
 
-  useEffect(() => {
-    if (characters.length > 0) {
-      calculateStats(characters);
-      setFilteredCharacters(characters);
-    }
-  }, [characters]);
+  // hook personalizado para estadísticas
+  const stats = useCharacterStats(characters);
 
-  const calculateStats = (list: characters[]) => {
-    const alive = list.filter(c => c.status === 'Alive').length;
-    const dead = list.filter(c => c.status === 'Dead').length;
-    const unknown = list.filter(c => c.status === 'unknown').length;
+  // Hook personalizado para filtrar
+  const filteredCharacters = useCharacterFilter({
+    characters,
+    search,
+    statusFilter
+  });
 
-    setStats({
-      total: list.length,
-      alive,
-      dead,
-      unknown,
-    });
-  };
-
-  useEffect(() => {
-    let temp = [...characters];
-
-    if (search) {
-      temp = temp.filter(c =>
-        c.name.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-
-    if (statusFilter !== 'all') {
-      temp = temp.filter(c => c.status === statusFilter);
-    }
-
-    setFilteredCharacters(temp);
-  }, [search, statusFilter, characters]);
-
+  // Total de personajes visibles
   const totalCharacters = useMemo(() => {
     return filteredCharacters.length;
   }, [filteredCharacters]);
 
   if (loading) {
-    return <Loading />;
+    return <LoadingState />;
   }
 
   if (error) {
     return (
-      <div className="alert alert-danger m-4">
+      <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg m-4">
         <strong>Error:</strong> {error}
       </div>
     );
@@ -70,10 +46,9 @@ export default function DashboardPage() {
 
   return (
     <div className="container-fluid p-4">
-      <h1 className="mb-4 text-2xl font-bold">Dashboard de Personajes</h1>
 
-      {/* Estadísticas */}
-      <div className="flex justify-center items-center bg-amber-300 gap-2">
+      {/* Header y Estadísticas */}
+      <div className="flex justify-center items-center gap-2">
         <DashboardHeader stats={stats} />
       </div>
 
@@ -87,36 +62,17 @@ export default function DashboardPage() {
       />
 
       {/* Lista */}
-      <div className="row">
+      <div className="flex flex-wrap gap-6 justify-center">
         {filteredCharacters.map(character => (
-          <div key={character.id} className="col-md-3 mb-4">
-            <div className="card h-100 shadow-sm">
-              <img
-                src={character.image}
-                alt={character.name}
-                className="card-img-top"
-              />
-              <div className="card-body">
-                <h5 className="card-title">{character.name}</h5>
-                <p className="card-text">
-                  <span
-                    className={`badge ${
-                      character.status === 'Alive'
-                        ? 'bg-success'
-                        : character.status === 'Dead'
-                        ? 'bg-danger'
-                        : 'bg-secondary'
-                    }`}
-                  >
-                    {character.status}
-                  </span>
-                </p>
-                <p className="text-sm text-gray-500">
-                  Especie: {character.species}
-                </p>
-              </div>
-            </div>
-          </div>
+          <Card
+            key={character.id}
+            title={character.name}
+            description={`Especie: ${character.species}`}
+            imageUrl={character.image}
+            avatarUrl={character.image}
+            status={character.status}
+            onClick={() => console.log('Click en:', character.name)}
+          />
         ))}
       </div>
 

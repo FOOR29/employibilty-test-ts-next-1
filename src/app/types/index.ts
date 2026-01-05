@@ -17,3 +17,13 @@ export interface DashboardHeaderProps {
     unknown?: number;
   };
 }
+
+// card tipado
+export interface CardProps {
+  title: string;
+  description?: string;
+  imageUrl?: string;
+  status?: string;
+  avatarUrl?: string;
+  onClick?: () => void;
+}

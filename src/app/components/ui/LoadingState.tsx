@@ -1,4 +1,4 @@
-export default function Loading() {
+export default function LoadingState() {
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="relative">
