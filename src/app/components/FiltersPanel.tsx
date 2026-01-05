@@ -1,12 +1,4 @@
-// components/FiltersPanel.tsx
-
-interface FiltersPanelProps {
-  search: string;
-  statusFilter: string;
-  totalVisible: number;
-  onSearchChange: (value: string) => void;
-  onStatusChange: (value: string) => void;
-}
+import { FiltersPanelProps } from "../types";
 
 export default function FiltersPanel({
   search,

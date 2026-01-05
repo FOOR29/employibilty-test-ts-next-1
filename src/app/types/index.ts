@@ -34,3 +34,12 @@ export interface UseCharacterFilterProps {
   search: string;
   statusFilter: string;
 }
+
+// fileter panel
+export interface FiltersPanelProps {
+  search: string;
+  statusFilter: string;
+  totalVisible: number;
+  onSearchChange: (value: string) => void;
+  onStatusChange: (value: string) => void;
+}
