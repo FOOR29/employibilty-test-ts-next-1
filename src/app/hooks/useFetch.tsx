@@ -18,7 +18,7 @@ export function UseFetch(url: string) {
         // funcion fetch
         fetch(url, { signal: abortController.signal })
             .then(res => res.json())
-            .then(json => setData(json.content))
+            .then(json => setData(json.results))
             .catch(err => {
                 if (err.name !== "AbortError") {
                     setError(err.message);

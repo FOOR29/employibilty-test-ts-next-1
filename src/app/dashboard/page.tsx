@@ -1,51 +1,29 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-
-interface Character {
-  id: number;
-  name: string;
-  status: string;
-  species: string;
-  image: string;
-}
-
-interface ApiResponse {
-  results: Character[];
-}
+import { UseFetch } from '../hooks/useFetch'; 
+import { RICK_AND_MORTY_API } from '@/services/api'; 
+import { characters } from '../types'; 
+import Loading from '@/components/ui/Loading';
+import FiltersPanel from '@/app/components/FiltersPanel';
+import DashboardHeader from '@/app/components/DashboardHeader';
 
 export default function DashboardPage() {
-  const [characters, setCharacters] = useState<Character[]>([]);
-  const [filteredCharacters, setFilteredCharacters] = useState<Character[]>([]);
+  const { data: characters, loading, error } = UseFetch(RICK_AND_MORTY_API);
+  
+  const [filteredCharacters, setFilteredCharacters] = useState<characters[]>([]);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  
-  const [stats, setStats] = useState<any>({});
+  const [stats, setStats] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    fetchCharacters();
-  }, []);
-
-  const fetchCharacters = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('https://rickandmortyapi.com/api/character');
-      const data: ApiResponse = await response.json();
-
-      setCharacters(data.results);
-      setFilteredCharacters(data.results);
-      calculateStats(data.results);
-    } catch (err: any) {
-      setError(err.message || 'Error inesperado');
-    } finally {
-      setLoading(false);
+    if (characters.length > 0) {
+      calculateStats(characters);
+      setFilteredCharacters(characters);
     }
-  };
+  }, [characters]);
 
-  const calculateStats = (list: Character[]) => {
+  const calculateStats = (list: characters[]) => {
     const alive = list.filter(c => c.status === 'Alive').length;
     const dead = list.filter(c => c.status === 'Dead').length;
     const unknown = list.filter(c => c.status === 'unknown').length;
@@ -74,17 +52,12 @@ export default function DashboardPage() {
     setFilteredCharacters(temp);
   }, [search, statusFilter, characters]);
 
-  
   const totalCharacters = useMemo(() => {
     return filteredCharacters.length;
   }, [filteredCharacters]);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <span className="spinner-border text-primary"></span>
-      </div>
-    );
+    return <Loading />;
   }
 
   if (error) {
@@ -100,69 +73,18 @@ export default function DashboardPage() {
       <h1 className="mb-4 text-2xl font-bold">Dashboard de Personajes</h1>
 
       {/* Estadísticas */}
-      <div className="row mb-4">
-        <div className="col-md-3">
-          <div className="card text-center p-3 shadow-sm">
-            <h6>Total</h6>
-            <p className="fw-bold">{stats.total}</p>
-          </div>
-        </div>
-        <div className="col-md-3">
-          <div className="card text-center p-3 shadow-sm">
-            <h6>Alive</h6>
-            <p className="fw-bold text-success">{stats.alive}</p>
-          </div>
-        </div>
-        <div className="col-md-3">
-          <div className="card text-center p-3 shadow-sm">
-            <h6>Dead</h6>
-            <p className="fw-bold text-danger">{stats.dead}</p>
-          </div>
-        </div>
-        <div className="col-md-3">
-          <div className="card text-center p-3 shadow-sm">
-            <h6>Unknown</h6>
-            <p className="fw-bold text-warning">{stats.unknown}</p>
-          </div>
-        </div>
+      <div className="flex justify-center items-center bg-amber-300 gap-2">
+        <DashboardHeader stats={stats} />
       </div>
 
-      {/* Filtros */}
-      <div
-        className="mb-4 p-3 rounded"
-        style={{ backgroundColor: '#f8f9fa' }} 
-      >
-        <div className="row g-2">
-          <div className="col-md-6">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Buscar personaje..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-            />
-          </div>
-
-          <div className="col-md-4">
-            <select
-              className="form-select"
-              value={statusFilter}
-              onChange={e => setStatusFilter(e.target.value)}
-            >
-              <option value="all">Todos</option>
-              <option value="Alive">Alive</option>
-              <option value="Dead">Dead</option>
-              <option value="unknown">Unknown</option>
-            </select>
-          </div>
-
-          <div className="col-md-2 d-flex align-items-center">
-            <span className="text-muted">
-              Total visibles: {totalCharacters}
-            </span>
-          </div>
-        </div>
-      </div>
+      {/* Filtro */}
+      <FiltersPanel
+        search={search}
+        statusFilter={statusFilter}
+        totalVisible={totalCharacters}
+        onSearchChange={setSearch}
+        onStatusChange={setStatusFilter}
+      />
 
       {/* Lista */}
       <div className="row">

@@ -7,3 +7,13 @@ export interface characters {
     species: string;
     image: string;
 }
+
+// tipado header 
+export interface DashboardHeaderProps {
+  stats: {
+    total?: number;
+    alive?: number;
+    dead?: number;
+    unknown?: number;
+  };
+}

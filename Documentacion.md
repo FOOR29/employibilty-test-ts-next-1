@@ -68,4 +68,6 @@ se eliminaran componentes innecesarios o repetidos como card y charactercard.
 
 - la vista page principal se elimino logica y solo se llama a la vista dashboard.
 
-- layout se agregaron metaetiquetas
+- layout se agregaron metaetiquetas.
+
+- se utiliazron components como filterPanel para el filtrado de los personajes, el DashboardPage donde coloco el titulo y total de datos

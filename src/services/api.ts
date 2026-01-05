@@ -3,4 +3,4 @@
 //   return response
 // }
 
-export const DEMON_SLAYER_API = "https://rickandmortyapi.com/api/character";
+export const RICK_AND_MORTY_API = "https://rickandmortyapi.com/api/character";
