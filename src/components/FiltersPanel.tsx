@@ -1,4 +1,4 @@
-import { FiltersPanelProps } from "../types";
+import { FiltersPanelProps } from "@/app/types"; 
 
 export default function FiltersPanel({
   search,

@@ -3,10 +3,10 @@
 import { useMemo, useState } from 'react';
 import { UseFetch } from '../hooks/useFetch'; 
 import { RICK_AND_MORTY_API } from '@/services/api'; 
-import FiltersPanel from '@/app/components/FiltersPanel';
-import DashboardHeader from '@/app/components/DashboardHeader';
-import LoadingState from '@/app/components/ui/LoadingState';
-import { Card } from '../components/Card';
+import FiltersPanel from '@/components/FiltersPanel';
+import DashboardHeader from '@/components/DashboardHeader';
+import LoadingState from '@/components/ui/LoadingState';
+import { Card } from '@/components/Card'; 
 import { useCharacterStats } from '../hooks/useCharacterStats';
 import { useCharacterFilter } from '../hooks/useCharacterFilter';
 
