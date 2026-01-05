@@ -62,3 +62,10 @@ hay dos carpetas de components con componetes repetidos como card uno mas comple
 - se utilizaran las dos carpetas components, /app/components sera para componentes para el dashboard, el components fuera de app sera usado para componentes globales como button, card etc.
 se eliminaran componentes innecesarios o repetidos como card y charactercard.
 
+## se corrigio
+
+- se instalo y configuro tailwinds css.
+
+- la vista page principal se elimino logica y solo se llama a la vista dashboard.
+
+- layout se agregaron metaetiquetas
