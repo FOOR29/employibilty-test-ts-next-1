@@ -20,24 +20,24 @@ export const Card: React.FC<CardProps> = ({
   };
 
   return (
-    <div 
+    <div
       className="group w-[320px] rounded-2xl bg-white overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl shadow-md border border-gray-100"
       onClick={onClick}
     >
-      {/* Imagen con overlay y badge */}
+      {/* Imagen */}
       <div className="relative h-[240px] overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50">
         {imageUrl && (
           <>
-            <img 
-              src={imageUrl} 
+            <img
+              src={imageUrl}
               alt={title}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
             />
-            
-            {/* Badge de status flotante */}
+
+            {/* Badge de status */}
             {status && (
               <div className="absolute top-3 right-3">
-                <span 
+                <span
                   className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-lg ${getStatusStyles(status)}`}
                 >
                   <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
@@ -48,14 +48,14 @@ export const Card: React.FC<CardProps> = ({
           </>
         )}
       </div>
-      
+
       {/* Contenido */}
       <div className="p-5">
         {/* Título */}
         <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-1 group-hover:text-indigo-600 transition-colors">
           {title}
         </h3>
-        
+
         {/* Descripción */}
         {description && (
           <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
@@ -63,7 +63,6 @@ export const Card: React.FC<CardProps> = ({
           </p>
         )}
 
-        {/* Separador visual */}
         <div className="mt-4 pt-4 border-t border-gray-100">
           <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold">
             Rick and Morty

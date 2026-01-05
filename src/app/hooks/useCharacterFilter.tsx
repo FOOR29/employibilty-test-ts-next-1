@@ -1,11 +1,5 @@
 import { useEffect, useState } from 'react';
-import { characters } from '../types';
-
-interface UseCharacterFilterProps {
-  characters: characters[];
-  search: string;
-  statusFilter: string;
-}
+import { characters, UseCharacterFilterProps } from '../types';
 
 export function useCharacterFilter({ 
   characters, 

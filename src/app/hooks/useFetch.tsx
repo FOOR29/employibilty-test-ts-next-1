@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { characters } from "../types";
 
-
-
 export function UseFetch(url: string) {
 
     const [data, setData] = useState<characters[]>([]);

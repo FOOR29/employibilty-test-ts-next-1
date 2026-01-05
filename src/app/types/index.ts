@@ -27,3 +27,10 @@ export interface CardProps {
   avatarUrl?: string;
   onClick?: () => void;
 }
+
+// character filter
+export interface UseCharacterFilterProps {
+  characters: characters[];
+  search: string;
+  statusFilter: string;
+}
